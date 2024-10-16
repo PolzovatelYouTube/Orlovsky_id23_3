@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
         self.settings_layout.addWidget(self.lily_pad_fall_update_interval_slider)
 
         self.max_lilies_slider = QSlider(Qt.Orientation.Horizontal)
-        self.max_lilies_slider.setRange(0, 10)
+        self.max_lilies_slider.setRange(1, 10)
         self.max_lilies_slider.setValue(self.max_lilies)
         self.max_lilies_slider.valueChanged.connect(self.update_max_lilies)
         self.settings_layout.addWidget(QLabel("Максимальное количество кувшинок"))
