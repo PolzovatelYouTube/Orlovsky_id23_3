@@ -1,5 +1,6 @@
 import sys
 import random
+import json
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
@@ -32,7 +33,7 @@ class LilyPad(QGraphicsEllipseItem):
         return self.pos()
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, standrad):
         super().__init__()
         self.setFixedSize(1000, 600)  # Установка фиксированного размера окна 1000x600
         self.scene = QGraphicsScene(0, 0, 800, 600)  # Создание сцены 800x600
@@ -42,15 +43,15 @@ class MainWindow(QMainWindow):
         self.view.setGeometry(200, 0, 800, 600)  # Установка геометрии QGraphicsView
 
         # Переменные для управления
-        self.trail_length = 2
-        self.fall_speed = 2
-        self.spawn_interval = 500
-        self.lily_weight_max = 5
-        self.jump_update_interval = 100
-        self.lily_pad_fall_update_interval = 20
-        self.max_lilies = 7
-        self.frog_weight = 5
-        self.frog_jump_distance = 200
+        self.trail_length = standrad.get("trail_length")
+        self.fall_speed = standrad.get("fall_speed")
+        self.spawn_interval = standrad.get("spawn_interval")
+        self.lily_weight_max = standrad.get("lily_weight_max")
+        self.jump_update_interval = standrad.get("jump_update_interval")
+        self.lily_pad_fall_update_interval = standrad.get("lily_pad_fall_update_interval")
+        self.max_lilies = standrad.get("max_lilies")
+        self.frog_weight = standrad.get("frog_weight")
+        self.frog_jump_distance = standrad.get("frog_jump_distance")
 
         # Создание левой полоски для настроек параметров
         self.settings_panel = QWidget(self)
@@ -202,7 +203,7 @@ class MainWindow(QMainWindow):
         for _ in range(number_of_lilies):
             # Случайное положение по оси X, с проверкой на расстояние между кувшинками
             while True:
-                x = random.randint(self.frog_jump_distance // 4, self.scene.width() - self.frog_jump_distance // 4)  
+                x = random.randint(int(self.frog_jump_distance // 4), int(self.scene.width() - self.frog_jump_distance // 4))  
                 if all(abs(x - pos_x) > 40 for pos_x in positions):  # 40 пикселей - минимальное расстояние
                     positions.append(x)
                     break
@@ -303,7 +304,21 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
+    standrad = {
+        "trail_length": 2,
+        "fall_speed" : 2,
+        "spawn_interval" : 500,
+        "lily_weight_max" : 5,
+        "jump_update_interval" : 100,
+        "lily_pad_fall_update_interval" : 20,
+        "max_lilies" : 7,
+        "frog_weight" : 5,
+        "frog_jump_distance" : 200
+    }
+    with open('test.json') as f:
+        inpJson = json.loads(f.read())
+    standrad.update(inpJson)
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(standrad)
     window.show()
     sys.exit(app.exec())
