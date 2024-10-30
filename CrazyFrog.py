@@ -315,9 +315,12 @@ if __name__ == '__main__':
         "frog_weight" : 5,
         "frog_jump_distance" : 200
     }
-    with open('test.json') as f:
-        inpJson = json.loads(f.read())
-    standrad.update(inpJson)
+    try:
+        with open('test.json') as f:
+            inpJson = json.loads(f.read())
+        standrad.update(inpJson)
+    except FileNotFoundError:
+        pass
     app = QApplication(sys.argv)
     window = MainWindow(standrad)
     window.show()
