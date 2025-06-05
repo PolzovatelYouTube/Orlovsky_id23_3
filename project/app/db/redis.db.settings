@@ -1,0 +1,1 @@
+{"pidfile": "/tmp/tmp8m70ilv2/redis.pid", "unixsocket": "/tmp/tmp8m70ilv2/redis.socket", "dbdir": "/home/denis/project/app/db", "dbfilename": "redis.db"}
